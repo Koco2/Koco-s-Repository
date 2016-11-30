@@ -69,28 +69,28 @@ class RingsApplication:
 
     
     def _on_button_down(self, event: tkinter.Event) -> None:
-        '''
-        Event handler that is called when the primary mouse button
-        is down within the canvas.
-        
-        '''
+   
         canvas_width = self._canvas.winfo_width()
         canvas_height = self._canvas.winfo_height()
 
         
-        
-        
         for key in self._rectangles:
             if event.x > canvas_width * self._rectangles[key][0] and event.y > canvas_height * self._rectangles[key][1] and event.x < canvas_width * self._rectangles[key][2] and event.y < canvas_height * self._rectangles[key][3]:
-                self._canvas.create_oval(
-                    canvas_width * self._rectangles[key][0], canvas_height * self._rectangles[key][1],
-                    canvas_width * self._rectangles[key][2], canvas_height * self._rectangles[key][3],
-                    outline = 'gray', fill = 'black') 
-                print(key)
+                obj.input = key
+                obj.row = int(key[0])
+                obj.col = int(key[2])
+                print(obj.row,obj.col)
                 break
+        obj.move()
+        obj.count_tile()
+        self.depositLabel['text'] = obj.label
+        self.print_board(obj.game_board)
+        
+        
 
     def _on_canvas_resized(self, event: tkinter.Event) -> None:
         self._draw_rectangles()
+        self.print_board(obj.game_board)
         #add more later
 
     def _draw_rectangles(self) -> None:
@@ -117,6 +117,8 @@ class RingsApplication:
 
 
     def print_board(self, game_board):
+        canvas_width = self._canvas.winfo_width()
+        canvas_height = self._canvas.winfo_height()
         for key in rectangles:
             row = int(key[0])
             col = int(key[2])
@@ -124,12 +126,12 @@ class RingsApplication:
                 self._canvas.create_oval(
                     canvas_width * self._rectangles[key][0], canvas_height * self._rectangles[key][1],
                     canvas_width * self._rectangles[key][2], canvas_height * self._rectangles[key][3],
-                    outline = 'gray', fill = 'black')
+                    outline = 'black', fill = 'black')
             elif game_board[row][col] == 'W':
                 self._canvas.create_oval(
                     canvas_width * self._rectangles[key][0], canvas_height * self._rectangles[key][1],
                     canvas_width * self._rectangles[key][2], canvas_height * self._rectangles[key][3],
-                    outline = 'gray', fill = 'white')
+                    outline = 'white', fill = 'white')
 
 
     
@@ -161,15 +163,15 @@ if __name__ == '__main__':
     app.run()
     #print_board(obj.game_board)
     #print('TURN: '+obj.turn)
-    while True:
-        obj.move()
-        obj.count_tile()
-        print_board(obj.game_board)
-        if obj.game_over():
-            break
-        print('TURN: '+ obj.turn)
-    obj.check_winner()
-    print('WINNER: '+obj.winner)
+    #while True:
+    #    obj.move()
+    #    obj.count_tile()
+    #    print_board(obj.game_board)
+    #    if obj.game_over():
+    #        break
+    #    print('TURN: '+ obj.turn)
+    #obj.check_winner()
+    #print('WINNER: '+obj.winner)
 #test only: 24,12,14,11,14,13,34,42,21,44,41,31,43
 
 
